@@ -1,0 +1,6 @@
+{
+  "name": "DevAd Guide",
+  "description": "Full-stack web development and mobile ad integration tutorial hub and sandbox featuring mock AdSense, AdMob simulators, interactive revenue calculators, code recipes, and persistent note taking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
