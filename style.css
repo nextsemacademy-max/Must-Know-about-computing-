@@ -196,6 +196,75 @@ li strong {
   color: var(--text);
 }
 
+/* Terminal Screenshot Showcase */
+.screenshot-container {
+  margin: 0.85rem 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+
+.screenshot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.75rem;
+  background: var(--surface-hover);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.window-dots {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.window-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.screenshot-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: none;
+}
+
+.screenshot-caption {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--success);
+  border: 1px solid var(--success);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
 /* Interactive Generator Section */
 .controls-bar {
   display: flex;

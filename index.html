@@ -32,10 +32,48 @@
       </div>
     </article>
 
-    <!-- Step 1: Search for Apps -->
+    <!-- Step 1: Verify Winget & Sources -->
     <article class="card">
       <div class="step-header">
         <span class="step-num">1</span>
+        <h2>Verify Winget &amp; Check Package Sources</h2>
+      </div>
+      <p>Verify that <code>winget</code> is working properly and inspect which download sources are configured on your system:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget --version; winget source list</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
+        </div>
+        <img src="assets/step1_version_sources.png" alt="PowerShell terminal showing winget version 1.9.25200 and sources msstore and winget with timestamp" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Winget <code>v1.9.25200</code> with <code>msstore</code> and <code>winget</code> sources.</span>
+          <span>Verified: 12-09-2026 21:44:01</span>
+        </div>
+      </div>
+
+      <p><strong>What this output means:</strong></p>
+      <ul>
+        <li><code>v1.9.25200</code>: The installed version of Windows Package Manager.</li>
+        <li><code>msstore</code>: Microsoft Store catalog (connects to <code>storeedgefd.dsx.mp.microsoft.com</code>).</li>
+        <li><code>winget</code>: The official community repository (connects to <code>cdn.winget.microsoft.com</code>) hosting open-source and desktop Win32 apps.</li>
+      </ul>
+    </article>
+
+    <!-- Step 2: Search for Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">2</span>
         <h2>Search for an Application</h2>
       </div>
       <p>Before installing, search the repository to find the application's unique Package <strong>Id</strong>:</p>
@@ -46,10 +84,10 @@
       <p>This prints a table with <strong>Name</strong>, <strong>Id</strong> (e.g. <code>Google.Chrome</code>), <strong>Version</strong>, and <strong>Source</strong>.</p>
     </article>
 
-    <!-- Step 2: Install Apps -->
+    <!-- Step 3: Install Apps -->
     <article class="card">
       <div class="step-header">
-        <span class="step-num">2</span>
+        <span class="step-num">3</span>
         <h2>Install an Application</h2>
       </div>
       <p>Use the package <strong>Id</strong> to install the program. Using <code>--id</code> ensures you don't accidentally install an unrelated app with a similar name:</p>
@@ -78,10 +116,10 @@
       </ul>
     </article>
 
-    <!-- Step 3: List Installed Apps -->
+    <!-- Step 4: List Installed Apps -->
     <article class="card">
       <div class="step-header">
-        <span class="step-num">3</span>
+        <span class="step-num">4</span>
         <h2>View Installed Applications</h2>
       </div>
       <p>To inspect all programs currently installed on your PC (both via winget and standard MSI/EXE installers):</p>
@@ -96,10 +134,10 @@
       </div>
     </article>
 
-    <!-- Step 4: Upgrade Apps -->
+    <!-- Step 5: Upgrade Apps -->
     <article class="card">
       <div class="step-header">
-        <span class="step-num">4</span>
+        <span class="step-num">5</span>
         <h2>Update / Upgrade Applications</h2>
       </div>
       <p>Check which apps have newer versions available:</p>
@@ -114,10 +152,10 @@
       </div>
     </article>
 
-    <!-- Step 5: Uninstall Apps -->
+    <!-- Step 6: Uninstall Apps -->
     <article class="card">
       <div class="step-header">
-        <span class="step-num">5</span>
+        <span class="step-num">6</span>
         <h2>Uninstall an Application</h2>
       </div>
       <p>Remove any app cleanly using its package ID or exact name:</p>
