@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Install & Uninstall Windows Apps via CMD / Terminal</title>
+  <meta name="description" content="Step-by-step tutorial and interactive command generator for installing, updating, and uninstalling applications on Windows using Command Prompt (winget).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <span class="badge">Windows CLI Guide</span>
+      <h1>Install &amp; Uninstall Apps via CMD</h1>
+      <p class="subtitle">A complete step-by-step reference and interactive command generator using Windows Package Manager (<code>winget</code>).</p>
+    </header>
+
+    <!-- Step 0: Open CMD as Administrator -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">0</span>
+        <h2>Open Command Prompt as Administrator</h2>
+      </div>
+      <p>Most application installers require elevated privileges to write to <code>Program Files</code> and register system services.</p>
+      <ul>
+        <li><strong>Method A (Fastest):</strong> Press <kbd>Win</kbd> + <kbd>X</kbd>, then press <kbd>A</kbd> (Terminal / PowerShell as Admin).</li>
+        <li><strong>Method B:</strong> Press <kbd>Win</kbd> + <kbd>R</kbd>, type <code>cmd</code>, and press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</li>
+        <li><strong>Method C:</strong> Press the Windows key, search for <code>cmd</code>, right-click <strong>Command Prompt</strong>, and select <strong>Run as administrator</strong>.</li>
+      </ul>
+      <div class="info-banner">
+        <strong>Note:</strong> Windows 10 (version 1709+) and Windows 11 include <code>winget</code> out of the box. No extra software installation is required!
+      </div>
+    </article>
+
+    <!-- Step 1: Search for Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <h2>Search for an Application</h2>
+      </div>
+      <p>Before installing, search the repository to find the application's unique Package <strong>Id</strong>:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget search chrome</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <p>This prints a table with <strong>Name</strong>, <strong>Id</strong> (e.g. <code>Google.Chrome</code>), <strong>Version</strong>, and <strong>Source</strong>.</p>
+    </article>
+
+    <!-- Step 2: Install Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <h2>Install an Application</h2>
+      </div>
+      <p>Use the package <strong>Id</strong> to install the program. Using <code>--id</code> ensures you don't accidentally install an unrelated app with a similar name:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget install --id Google.Chrome -e</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <p><strong>Recommended Unattended / Silent Installation:</strong> Automatically accept agreements and suppress GUI wizard dialogs:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget install --id Google.Chrome -e --silent --accept-package-agreements --accept-source-agreements</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <div class="info-banner" style="margin-bottom: 0.75rem;">
+        <strong>Bypass Certificate / MSStore Errors (0x8a15005e):</strong> If you see <em>"Failed when searching source: msstore"</em>, add <code>-s winget</code> to query only the community winget repository:
+        <div class="code-box" style="margin-top: 0.4rem; margin-bottom: 0;">
+          <pre><code class="copy-target">winget install --id Google.Chrome -s winget -e</code></pre>
+          <button class="copy-btn" title="Copy command">Copy</button>
+        </div>
+      </div>
+      <ul>
+        <li><code>--id &lt;ID&gt;</code>: Unique package identifier (e.g. <code>Google.Chrome</code>).</li>
+        <li><code>-s winget</code>: Forces the <code>winget</code> source only, bypassing Microsoft Store certificate verification failures.</li>
+        <li><code>-e</code>: Exact string match for the package ID.</li>
+        <li><code>--silent</code>: Performs installation in the background without pop-up wizard clicks.</li>
+        <li><code>--accept-package-agreements</code>: Automatically accepts publisher license terms.</li>
+      </ul>
+    </article>
+
+    <!-- Step 3: List Installed Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">3</span>
+        <h2>View Installed Applications</h2>
+      </div>
+      <p>To inspect all programs currently installed on your PC (both via winget and standard MSI/EXE installers):</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget list</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <p>Filter for a specific app:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget list Google.Chrome</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+    </article>
+
+    <!-- Step 4: Upgrade Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">4</span>
+        <h2>Update / Upgrade Applications</h2>
+      </div>
+      <p>Check which apps have newer versions available:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget upgrade</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <p>Upgrade <strong>all</strong> outdated software on your computer with a single command:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget upgrade --all --silent --accept-package-agreements --accept-source-agreements</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+    </article>
+
+    <!-- Step 5: Uninstall Apps -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">5</span>
+        <h2>Uninstall an Application</h2>
+      </div>
+      <p>Remove any app cleanly using its package ID or exact name:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget uninstall --id Google.Chrome</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+      <p>Silent / unattended removal:</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget uninstall --id Google.Chrome --silent</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+    </article>
+
+    <!-- Interactive Command & Batch Generator -->
+    <section class="card" aria-labelledby="generator-heading">
+      <div class="step-header">
+        <span class="step-num">&#9881;</span>
+        <h2 id="generator-heading">Interactive Command &amp; Batch Generator</h2>
+      </div>
+      <p>Select apps below to instantly generate single commands or a batch setup script for your terminal:</p>
+
+      <div class="controls-bar">
+        <!-- Mode Switcher -->
+        <div class="segmented-control" role="group" aria-label="Action Mode">
+          <button type="button" id="mode-install" class="seg-btn active">Install</button>
+          <button type="button" id="mode-uninstall" class="seg-btn danger">Uninstall</button>
+        </div>
+
+        <!-- Tool Switcher -->
+        <div class="segmented-control" role="group" aria-label="Package Manager">
+          <button type="button" id="tool-winget" class="seg-btn active">winget</button>
+          <button type="button" id="tool-choco" class="seg-btn">choco</button>
+        </div>
+
+        <!-- Search Bar -->
+        <input 
+          type="text" 
+          id="app-search" 
+          class="search-input" 
+          placeholder="Filter apps (e.g. vscode, git, vlc)..."
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Apps Selection Grid -->
+      <div id="apps-container" class="apps-grid">
+        <!-- Injected by app.js -->
+      </div>
+
+      <!-- Flags toggles -->
+      <div class="options-row">
+        <label>
+          <input type="checkbox" id="flag-silent" checked>
+          <span>Silent mode (<code>--silent</code>)</span>
+        </label>
+        <label id="flag-source-wrap">
+          <input type="checkbox" id="flag-source" checked>
+          <span>Force <code>-s winget</code> (fixes 0x8a15005e error)</span>
+        </label>
+        <label id="flag-agreements-wrap">
+          <input type="checkbox" id="flag-agreements" checked>
+          <span>Auto-accept agreements</span>
+        </label>
+        <button type="button" id="btn-select-all" style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:0.85rem; text-decoration:underline;">Select All</button>
+        <button type="button" id="btn-clear-all" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; text-decoration:underline;">Clear</button>
+      </div>
+
+      <!-- Generated Command Output -->
+      <label style="font-size: 0.85rem; font-weight: 600; color: var(--text);">Ready-to-Run Command (paste into CMD / Terminal):</label>
+      <div class="code-box">
+        <pre><code id="generated-batch-command"># Select one or more apps above to generate your command</code></pre>
+        <button id="copy-generated-btn" class="copy-btn" title="Copy generated command">Copy</button>
+      </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <article class="card">
+      <div class="step-header">
+        <span class="step-num">?</span>
+        <h2>Troubleshooting &amp; Common Errors</h2>
+      </div>
+
+      <!-- Error: 0x8a15005e Server certificate mismatch -->
+      <div class="danger-banner">
+        <strong>Error: Failed when searching source: msstore &bull; 0x8a15005e</strong><br>
+        <span style="font-size: 0.8rem; opacity: 0.9;">"An unexpected error occurred while executing the command: 0x8a15005e : The server certificate did not match any of the expected values."</span>
+      </div>
+      <p style="margin-top: 0.6rem;">
+        <strong>Why this happens:</strong> By default, <code>winget</code> checks both the community repository and the Microsoft Store (<code>msstore</code>). When on a corporate proxy/VPN, behind antivirus HTTPS scanning, or when local store certificates are stale, the TLS handshake for <code>msstore</code> fails with error <code>0x8a15005e</code>.
+      </p>
+
+      <p><strong>Fix 1 (Instant): Specify <code>-s winget</code> to bypass msstore</strong></p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget install --id Google.Chrome -s winget</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <p><strong>Fix 2: Reset and update winget sources</strong></p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget source reset --force &amp;&amp; winget source update</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <p><strong>Fix 3: Disable the problematic msstore source permanently</strong></p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget source remove msstore</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <p><strong>Fix 4: Direct PowerShell Chrome installer fallback (no winget needed)</strong></p>
+      <div class="code-box">
+        <pre><code class="copy-target">$installer = "$env:TEMP\chrome_installer.exe"; Invoke-WebRequest "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -OutFile $installer; Start-Process $installer -ArgumentList "/silent /install" -Wait; Remove-Item $installer</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0 1rem 0;">
+
+      <!-- Error: winget not recognized -->
+      <div class="alert-banner">
+        <strong>Error: 'winget' is not recognized as an internal or external command</strong>
+      </div>
+      <p style="margin-top: 0.6rem;">If your Windows machine doesn't have <code>winget</code> installed or enabled yet:</p>
+      <ul>
+        <li>Open the <strong>Microsoft Store</strong>, search for <strong>App Installer</strong>, and click <strong>Update</strong> or <strong>Install</strong>.</li>
+        <li>Alternatively, download the latest <code>.msixbundle</code> release from the official <a href="https://github.com/microsoft/winget-cli/releases" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">GitHub Winget Releases</a>.</li>
+      </ul>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0 1rem 0;">
+
+      <!-- Error: 0x80070005 Administrator required -->
+      <div class="alert-banner">
+        <strong>Error: 0x80070005 (Access is Denied) / Installer failed with exit code 1603</strong>
+      </div>
+      <p style="margin-top: 0.6rem;">This indicates insufficient administrative permissions.</p>
+      <ul>
+        <li>Relaunch Terminal or PowerShell by pressing <kbd>Win</kbd> + <kbd>X</kbd> &rarr; <strong>Terminal (Admin)</strong>.</li>
+      </ul>
+    </article>
+
+    <footer>
+      <p>Windows Command Line App Management Guide &bull; Pure Vanilla HTML, CSS &amp; JS</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
