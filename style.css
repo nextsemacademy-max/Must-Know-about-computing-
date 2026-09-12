@@ -5,15 +5,31 @@
   --border: #30363d;
   --text: #e6edf3;
   --text-muted: #8b949e;
+  --heading: #ffffff;
   --accent: #58a6ff;
   --accent-hover: #1f6feb;
   --success: #3fb950;
   --warning: #d29922;
   --danger: #f85149;
   --code-bg: #090c10;
+  --code-text: #58a6ff;
   --radius: 6px;
   --font-mono: Consolas, Monaco, "SF Mono", monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --surface-hover: #eaeef2;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --heading: #1f2328;
+  --accent: #0969da;
+  --accent-hover: #0854b0;
+  --code-bg: #f6f8fa;
+  --code-text: #0550ae;
 }
 
 * {
@@ -28,6 +44,7 @@ body {
   font-family: var(--font-sans);
   line-height: 1.6;
   padding: 2rem 1rem;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .container {
@@ -41,6 +58,44 @@ header {
   margin-bottom: 2rem;
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 .badge {
   display: inline-block;
   font-size: 0.75rem;
@@ -52,13 +107,12 @@ header {
   color: var(--accent);
   border: 1px solid var(--border);
   border-radius: 999px;
-  margin-bottom: 0.6rem;
 }
 
 h1 {
   font-size: 1.85rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 0.35rem;
 }
 
@@ -98,7 +152,7 @@ h1 {
 
 h2 {
   font-size: 1.15rem;
-  color: #fff;
+  color: var(--heading);
   font-weight: 600;
 }
 
@@ -133,7 +187,7 @@ li strong {
 .code-box pre {
   font-family: var(--font-mono);
   font-size: 0.9rem;
-  color: var(--accent);
+  color: var(--code-text);
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-all;
@@ -295,7 +349,7 @@ li strong {
 
 .seg-btn.active {
   background: var(--surface-hover);
-  color: #fff;
+  color: var(--heading);
 }
 
 .seg-btn.danger.active {
@@ -309,7 +363,7 @@ li strong {
   background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  color: #fff;
+  color: var(--text);
   padding: 0.45rem 0.75rem;
   font-size: 0.85rem;
   outline: none;
@@ -396,7 +450,7 @@ kbd {
   padding: 0.1rem 0.35rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: #fff;
+  color: var(--text);
 }
 
 footer {

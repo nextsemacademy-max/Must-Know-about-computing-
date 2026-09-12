@@ -10,7 +10,13 @@
 <body>
   <main class="container">
     <header>
-      <span class="badge">Windows CLI Guide</span>
+      <div class="header-top">
+        <span class="badge">Windows CLI Guide</span>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light and dark mode" title="Toggle theme">
+          <span id="theme-icon" class="theme-icon">🌙</span>
+          <span id="theme-label" class="theme-text">Dark</span>
+        </button>
+      </div>
       <h1>Install &amp; Uninstall Apps via CMD</h1>
       <p class="subtitle">A complete step-by-step reference and interactive command generator using Windows Package Manager (<code>winget</code>).</p>
     </header>
