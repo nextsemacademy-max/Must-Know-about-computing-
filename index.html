@@ -78,10 +78,35 @@
       </div>
       <p>Before installing, search the repository to find the application's unique Package <strong>Id</strong>:</p>
       <div class="code-box">
-        <pre><code class="copy-target">winget search chrome</code></pre>
+        <pre><code class="copy-target">winget search chrome -s winget</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
-      <p>This prints a table with <strong>Name</strong>, <strong>Id</strong> (e.g. <code>Google.Chrome</code>), <strong>Version</strong>, and <strong>Source</strong>.</p>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
+        </div>
+        <img src="assets/step2_search_chrome.png" alt="PowerShell terminal showing winget search chrome output table with Google.Chrome package ID" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Found <code>Google Chrome</code> with package ID <code>Google.Chrome</code> (version 153.0.8010.37).</span>
+          <span>Verified Search Output</span>
+        </div>
+      </div>
+
+      <p><strong>Key Output Columns Explained:</strong></p>
+      <ul>
+        <li><strong>Name:</strong> The human-readable application name (e.g., <code>Google Chrome</code>).</li>
+        <li><strong>Id:</strong> The unique, unambiguous package identifier (e.g., <code>Google.Chrome</code>). Always use this exact ID for installation.</li>
+        <li><strong>Version:</strong> The latest software release currently available in the repository.</li>
+        <li><strong>Match:</strong> The attribute that triggered the match (e.g., <code>Moniker: chrome</code> or <code>Tag: chrome</code>).</li>
+      </ul>
     </article>
 
     <!-- Step 3: Install Apps -->
@@ -92,27 +117,38 @@
       </div>
       <p>Use the package <strong>Id</strong> to install the program. Using <code>--id</code> ensures you don't accidentally install an unrelated app with a similar name:</p>
       <div class="code-box">
-        <pre><code class="copy-target">winget install --id Google.Chrome -e</code></pre>
+        <pre><code class="copy-target">winget install --id Google.Chrome -s winget -e --accept-package-agreements --accept-source-agreements</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
-      <p><strong>Recommended Unattended / Silent Installation:</strong> Automatically accept agreements and suppress GUI wizard dialogs:</p>
-      <div class="code-box">
-        <pre><code class="copy-target">winget install --id Google.Chrome -e --silent --accept-package-agreements --accept-source-agreements</code></pre>
-        <button class="copy-btn" title="Copy command">Copy</button>
-      </div>
-      <div class="info-banner" style="margin-bottom: 0.75rem;">
-        <strong>Bypass Certificate / MSStore Errors (0x8a15005e):</strong> If you see <em>"Failed when searching source: msstore"</em>, add <code>-s winget</code> to query only the community winget repository:
-        <div class="code-box" style="margin-top: 0.4rem; margin-bottom: 0;">
-          <pre><code class="copy-target">winget install --id Google.Chrome -s winget -e</code></pre>
-          <button class="copy-btn" title="Copy command">Copy</button>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
         </div>
+        <img src="assets/step3_install_chrome.png" alt="PowerShell terminal showing existing package detection and upgrade check" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Winget detects existing installation safely and checks for updates.</span>
+          <span>Verified: 12-09-2026 22:15:19</span>
+        </div>
+      </div>
+
+      <div class="info-banner" style="margin-bottom: 0.75rem;">
+        <strong>Smart Duplicate Protection:</strong> If the application is already installed on your PC, <code>winget</code> intelligently detects it and queries whether an update is available instead of breaking existing installations.
       </div>
       <ul>
         <li><code>--id &lt;ID&gt;</code>: Unique package identifier (e.g. <code>Google.Chrome</code>).</li>
         <li><code>-s winget</code>: Forces the <code>winget</code> source only, bypassing Microsoft Store certificate verification failures.</li>
         <li><code>-e</code>: Exact string match for the package ID.</li>
-        <li><code>--silent</code>: Performs installation in the background without pop-up wizard clicks.</li>
+        <li><code>--silent</code>: (Optional) Performs installation in the background without pop-up wizard clicks.</li>
         <li><code>--accept-package-agreements</code>: Automatically accepts publisher license terms.</li>
+        <li><code>--accept-source-agreements</code>: Automatically accepts repository source terms.</li>
       </ul>
     </article>
 
@@ -122,14 +158,42 @@
         <span class="step-num">4</span>
         <h2>View Installed Applications</h2>
       </div>
-      <p>To inspect all programs currently installed on your PC (both via winget and standard MSI/EXE installers):</p>
-      <div class="code-box">
-        <pre><code class="copy-target">winget list</code></pre>
-        <button class="copy-btn" title="Copy command">Copy</button>
-      </div>
-      <p>Filter for a specific app:</p>
+      <p>Verify which version of a package is currently installed on your PC:</p>
       <div class="code-box">
         <pre><code class="copy-target">winget list Google.Chrome</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
+        </div>
+        <img src="assets/step4_list_chrome.png" alt="PowerShell terminal showing winget list Google.Chrome with version 153.0.8010.37" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Verified <code>Google Chrome</code> (version 153.0.8010.37) installed via <code>winget</code> source.</span>
+          <span>Verified: 12-09-2026 22:16:25</span>
+        </div>
+      </div>
+
+      <div class="info-banner" style="margin-bottom: 0.75rem;">
+        <strong>Notice the warning?</strong> <em>"Failed when searching source; results will not be included: msstore"</em><br>
+        <code>winget</code> is resilient: even if the Microsoft Store source encounters an error, it queries remaining healthy sources (like <code>winget</code>) and returns your installed apps! To filter specifically by source and suppress the warning:
+        <div class="code-box" style="margin-top: 0.4rem; margin-bottom: 0;">
+          <pre><code class="copy-target">winget list Google.Chrome -s winget</code></pre>
+          <button class="copy-btn" title="Copy command">Copy</button>
+        </div>
+      </div>
+
+      <p>To inspect <strong>all</strong> programs installed across your entire PC (both via winget and traditional MSI/EXE installers):</p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget list</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
     </article>
@@ -140,14 +204,39 @@
         <span class="step-num">5</span>
         <h2>Update / Upgrade Applications</h2>
       </div>
-      <p>Check which apps have newer versions available:</p>
+      <p>Check which installed applications have newer versions available in the repository:</p>
       <div class="code-box">
-        <pre><code class="copy-target">winget upgrade</code></pre>
+        <pre><code class="copy-target">winget upgrade -s winget</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
-      <p>Upgrade <strong>all</strong> outdated software on your computer with a single command:</p>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
+        </div>
+        <img src="assets/step5_upgrade_apps.png" alt="PowerShell terminal showing winget upgrade listing 3 available upgrades" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Found 3 upgrades available (App Installer, Microsoft 365 Copilot, Windows Terminal).</span>
+          <span>Verified: 12-09-2026 22:31:39</span>
+        </div>
+      </div>
+
+      <p><strong>To upgrade a single specific application:</strong></p>
       <div class="code-box">
-        <pre><code class="copy-target">winget upgrade --all --silent --accept-package-agreements --accept-source-agreements</code></pre>
+        <pre><code class="copy-target">winget upgrade --id Microsoft.WindowsTerminal -s winget</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <p><strong>To upgrade ALL outdated applications at once (One-Click Bulk Update):</strong></p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget upgrade --all -s winget --silent --accept-package-agreements --accept-source-agreements</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
     </article>
@@ -158,16 +247,43 @@
         <span class="step-num">6</span>
         <h2>Uninstall an Application</h2>
       </div>
-      <p>Remove any app cleanly using its package ID or exact name:</p>
+      <p>Remove any application cleanly using its unique Package ID without leaving registry leftovers:</p>
       <div class="code-box">
         <pre><code class="copy-target">winget uninstall --id Google.Chrome</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
-      <p>Silent / unattended removal:</p>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified">&#10003; Verified Output</span>
+        </div>
+        <img src="assets/step6_uninstall_help.png" alt="PowerShell terminal showing winget uninstall help options and syntax" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Terminal Output:</strong> Winget uninstall syntax, arguments (<code>--id</code>, <code>--name</code>), and aliases (<code>remove</code>, <code>rm</code>).</span>
+          <span>Verified: 12-09-2026 22:39:36</span>
+        </div>
+      </div>
+
+      <p><strong>Silent / Unattended Removal:</strong> Suppress uninstall prompts and remove cleanly in the background:</p>
       <div class="code-box">
         <pre><code class="copy-target">winget uninstall --id Google.Chrome --silent</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
+
+      <p><strong>Useful Uninstall Flags:</strong></p>
+      <ul>
+        <li><code>--id &lt;ID&gt;</code>: Target the specific package ID (prevents accidental removal of similar apps).</li>
+        <li><code>--silent</code> (or <code>-h</code>): Runs the uninstaller silently without dialog boxes.</li>
+        <li><code>--purge</code>: Deletes all residual files and directories created by portable packages.</li>
+        <li><code>remove</code> or <code>rm</code>: Shorthand command aliases for <code>winget uninstall</code>.</li>
+      </ul>
     </article>
 
     <!-- Interactive Command & Batch Generator -->
@@ -271,6 +387,72 @@
         <pre><code class="copy-target">$installer = "$env:TEMP\chrome_installer.exe"; Invoke-WebRequest "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -OutFile $installer; Start-Process $installer -ArgumentList "/silent /install" -Wait; Remove-Item $installer</code></pre>
         <button class="copy-btn" title="Copy command">Copy</button>
       </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0 1rem 0;">
+
+      <!-- Error: No sources match the given value: -e -->
+      <div class="alert-banner">
+        <strong>Error: No sources match the given value: -e</strong><br>
+        <span style="font-size: 0.8rem; opacity: 0.9;">"No sources match the given value: -e &bull; The configured sources are: msstore, winget"</span>
+      </div>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container" style="margin-top: 0.6rem;">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified" style="color:var(--warning); border-color:var(--warning); background:rgba(210, 153, 34, 0.15);">&#9888; Verified Error</span>
+        </div>
+        <img src="assets/troubleshoot_missing_source.png" alt="PowerShell error showing No sources match the given value: -e" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Why it happens:</strong> Omitting the source name after <code>-s</code> causes winget to treat <code>-e</code> as the source name.</span>
+          <span>Syntax Resolution</span>
+        </div>
+      </div>
+      <p style="margin-top: 0.6rem;">
+        <strong>Fix:</strong> Always place the source name (e.g., <code>winget</code>) directly after the <code>-s</code> flag:
+      </p>
+      <div class="code-box">
+        <pre><code class="copy-target">winget install --id Google.Chrome -s winget -e</code></pre>
+        <button class="copy-btn" title="Copy command">Copy</button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0 1rem 0;">
+
+      <!-- Error: 0x80072ee2 Installer failed with exit code: 0x80072ee2 : unknown error -->
+      <div class="danger-banner">
+        <strong>Error: Installer failed with exit code: 0x80072ee2 : unknown error</strong><br>
+        <span style="font-size: 0.8rem; opacity: 0.9;">"ERROR_INTERNET_TIMEOUT &bull; Network connection timed out while downloading dependencies or packages"</span>
+      </div>
+
+      <!-- Real Terminal Screenshot -->
+      <div class="screenshot-container" style="margin-top: 0.6rem;">
+        <div class="screenshot-header">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>Administrator: Windows PowerShell</span>
+          <span class="badge-verified" style="color:var(--danger); border-color:var(--danger); background:rgba(248, 81, 73, 0.15);">&#9888; Verified Error</span>
+        </div>
+        <img src="assets/troubleshoot_timeout_0x80072ee2.png" alt="PowerShell terminal showing Installer failed with exit code 0x80072ee2 timeout" loading="lazy">
+        <div class="screenshot-caption">
+          <span><strong>Why it happens:</strong> Windows timed out (<code>0x80072ee2</code>) downloading runtime dependency (<code>Microsoft.UI.Xaml.2.8</code>), or the application is currently running.</span>
+          <span>Verified: 12-09-2026 22:38:03</span>
+        </div>
+      </div>
+      <p style="margin-top: 0.6rem;">
+        <strong>How to fix:</strong>
+      </p>
+      <ul>
+        <li><strong>Fix 1 (Retry):</strong> Timeout errors are often temporary connection spikes. Re-running the command after a few seconds usually succeeds.</li>
+        <li><strong>Fix 2 (Close in-use app):</strong> If updating Windows Terminal while running inside it, close it and run the update command from standard Command Prompt (<code>cmd.exe</code>).</li>
+      </ul>
 
       <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0 1rem 0;">
 
