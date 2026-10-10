@@ -74,6 +74,34 @@
     }
   }
 
+  // Firebase Configuration (NextSem CS-Guide ignou-study-notes-by-nextsem)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDBoWw_8QOA_S_UfTRQQcNc-CGLBbctMAQ",
+    authDomain: "ignou-study-notes-by-nextsem.firebaseapp.com",
+    projectId: "ignou-study-notes-by-nextsem",
+    storageBucket: "ignou-study-notes-by-nextsem.firebasestorage.app",
+    messagingSenderId: "498697546118",
+    appId: "1:498697546118:web:4630ab76b34fcc3d83a407",
+    measurementId: "G-HT7CETXT6J"
+  };
+
+  let auth = null;
+  let db = null;
+  let currentUser = null;
+  let evaluatedScoreData = null;
+
+  try {
+    if (typeof firebase !== 'undefined') {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      auth = firebase.auth();
+      db = firebase.firestore();
+    }
+  } catch (fbInitErr) {
+    console.warn("Firebase initialization deferred:", fbInitErr);
+  }
+
   // DOM Elements
   const elements = {
     // Header & Meta
@@ -86,6 +114,8 @@
     soundToggleBtn: document.getElementById('btn-sound-toggle'),
     fontDecBtn: document.getElementById('btn-font-dec'),
     fontIncBtn: document.getElementById('btn-font-inc'),
+    btnHeaderAuth: document.getElementById('btn-header-auth'),
+    headerAuthLabel: document.getElementById('header-auth-label'),
 
     // Main Test Arena
     questionStage: document.getElementById('question-stage'),
@@ -105,7 +135,7 @@
     reviewBtn: document.getElementById('btn-review'),
     submitTestBtn: document.getElementById('btn-submit-test'),
 
-    // Sidebar Palette
+    // Sidebar Palette & Candidate
     answeredCount: document.getElementById('count-answered'),
     notAnsweredCount: document.getElementById('count-not-answered'),
     markedCount: document.getElementById('count-marked'),
@@ -113,6 +143,10 @@
     notVisitedCount: document.getElementById('count-not-visited'),
     categoryFilterSelect: document.getElementById('category-filter-select'),
     questionsMatrix: document.getElementById('questions-matrix'),
+    candidateCard: document.getElementById('candidate-card'),
+    candidateAvatar: document.getElementById('candidate-avatar'),
+    candidateName: document.getElementById('candidate-name'),
+    candidateId: document.getElementById('candidate-id'),
 
     // Confirmation Modal
     submitModal: document.getElementById('submit-modal'),
@@ -135,7 +169,22 @@
     btnRetake: document.getElementById('btn-retake'),
     btnPrintReport: document.getElementById('btn-print-report'),
     btnExportJson: document.getElementById('btn-export-json'),
-    reviewFilterChips: document.querySelectorAll('.filter-chip')
+    reviewFilterChips: document.querySelectorAll('.filter-chip'),
+
+    // CS-Guide Google Cloud Sync Elements
+    csGuideSyncCard: document.getElementById('cs-guide-sync-card'),
+    syncStatusBadge: document.getElementById('sync-status-badge'),
+    syncStatusText: document.getElementById('sync-status-text'),
+    syncUnauthBox: document.getElementById('sync-unauth-box'),
+    btnGoogleSync: document.getElementById('btn-google-sync'),
+    syncAuthBox: document.getElementById('sync-auth-box'),
+    userAvatar: document.getElementById('user-avatar'),
+    userDisplayName: document.getElementById('user-display-name'),
+    userEmail: document.getElementById('user-email'),
+    btnManualSync: document.getElementById('btn-manual-sync'),
+    linkCsGuideProfile: document.getElementById('link-csguide-profile'),
+    btnGoogleSignOut: document.getElementById('btn-google-signout'),
+    syncNotification: document.getElementById('sync-notification')
   };
 
   // State Persistence
@@ -454,7 +503,27 @@
     // Switch view
     document.querySelector('.cbt-main-content').style.display = 'none';
     elements.resultsContainer.classList.add('active');
+
+    // Update Header Status
+    if (elements.modeBadgeText) {
+      elements.modeBadgeText.textContent = 'Exam Completed & Evaluated';
+    }
+    const elapsedSecs = DEFAULT_DURATION_SECONDS - state.timeRemaining;
+    const elapsedMins = Math.floor(elapsedSecs / 60);
+    const elapsedRemSecs = elapsedSecs % 60;
+    if (elements.timerDisplay) {
+      elements.timerDisplay.textContent = `Completed (${elapsedMins}m ${elapsedRemSecs}s)`;
+    }
+
+    // Scroll to Top immediately so score is visible
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     renderResults();
+
+    // Auto-sync score if user is already signed in
+    if (currentUser) {
+      syncScoreToFirestore(currentUser);
+    }
   }
 
   // Results & Analytics
@@ -516,7 +585,216 @@
       elements.categoryProgressList.appendChild(row);
     });
 
+    evaluatedScoreData = {
+      score: score,
+      percentage: percentage,
+      accuracy: accuracy,
+      attemptedCount: attemptedCount,
+      timeSpentSeconds: timeSpentSeconds,
+      minsSpent: minsSpent,
+      secsSpent: secsSpent,
+      categoryStats: categoryStats
+    };
+
+    updateUserUI(currentUser);
+    if (currentUser) {
+      syncScoreToFirestore(currentUser);
+    }
+
     renderReviewList('ALL');
+  }
+
+  // ── CS-Guide Firebase Auth & Score Synchronization ──
+  function updateUserUI(user) {
+    if (user) {
+      if (elements.btnHeaderAuth) {
+        elements.btnHeaderAuth.classList.add('signed-in');
+        if (elements.headerAuthLabel) {
+          elements.headerAuthLabel.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Profile';
+        }
+      }
+      if (elements.candidateName) {
+        elements.candidateName.textContent = user.displayName || 'Candidate';
+      }
+      if (elements.candidateId) {
+        elements.candidateId.textContent = user.email || 'Verified Candidate';
+      }
+      if (elements.candidateAvatar) {
+        if (user.photoURL) {
+          elements.candidateAvatar.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:var(--radius-md);object-fit:cover;" alt="Avatar" />`;
+        } else {
+          elements.candidateAvatar.textContent = (user.displayName || user.email || 'CC').charAt(0).toUpperCase();
+        }
+      }
+
+      // Sync Card View
+      if (elements.syncUnauthBox) elements.syncUnauthBox.style.display = 'none';
+      if (elements.syncAuthBox) elements.syncAuthBox.style.display = 'flex';
+      if (elements.userAvatar) {
+        elements.userAvatar.src = user.photoURL || 'https://lh3.googleusercontent.com/a/default-user';
+      }
+      if (elements.userDisplayName) {
+        elements.userDisplayName.textContent = user.displayName || 'NextSem Student';
+      }
+      if (elements.userEmail) {
+        elements.userEmail.textContent = user.email || '';
+      }
+      if (elements.syncStatusText && (!elements.syncStatusBadge || !elements.syncStatusBadge.classList.contains('synced'))) {
+        elements.syncStatusText.textContent = 'Google Connected';
+      }
+    } else {
+      if (elements.btnHeaderAuth) {
+        elements.btnHeaderAuth.classList.remove('signed-in');
+        if (elements.headerAuthLabel) {
+          elements.headerAuthLabel.textContent = 'Sign In';
+        }
+      }
+      if (elements.candidateName) elements.candidateName.textContent = 'Computer Competency';
+      if (elements.candidateId) elements.candidateId.textContent = 'ID: CBT-2026-X100';
+      if (elements.candidateAvatar) elements.candidateAvatar.textContent = 'CC';
+
+      if (elements.syncUnauthBox) elements.syncUnauthBox.style.display = 'flex';
+      if (elements.syncAuthBox) elements.syncAuthBox.style.display = 'none';
+      if (elements.syncStatusBadge) elements.syncStatusBadge.className = 'sync-status-badge';
+      if (elements.syncStatusText) elements.syncStatusText.textContent = 'Not Connected';
+      if (elements.syncNotification) elements.syncNotification.style.display = 'none';
+    }
+  }
+
+  async function syncScoreToFirestore(user) {
+    if (!user) return;
+    if (!evaluatedScoreData) {
+      renderResults();
+    }
+    if (!evaluatedScoreData) return;
+
+    if (elements.syncStatusText) {
+      elements.syncStatusText.textContent = 'Syncing...';
+    }
+    if (elements.btnManualSync) {
+      elements.btnManualSync.innerHTML = '<span>⏳</span> Syncing to Firestore...';
+      elements.btnManualSync.disabled = true;
+    }
+
+    const payload = {
+      examTitle: "National Computer Competency Assessment (100 MCQs)",
+      examCode: "CBT-100-COMP",
+      score: evaluatedScoreData.score,
+      totalQuestions: TOTAL_QUESTIONS,
+      percentage: parseFloat(evaluatedScoreData.percentage),
+      accuracy: parseFloat(evaluatedScoreData.accuracy),
+      passed: evaluatedScoreData.score >= 60,
+      status: evaluatedScoreData.score >= 60 ? "PASSED (PROMOTED)" : "NEEDS PRACTICE",
+      timeSpentSeconds: evaluatedScoreData.timeSpentSeconds,
+      timeSpentFormatted: `${evaluatedScoreData.minsSpent}m ${evaluatedScoreData.secsSpent}s`,
+      submittedAt: new Date().toISOString(),
+      categoryStats: evaluatedScoreData.categoryStats
+    };
+
+    try {
+      if (db) {
+        await db.collection("users_progress").doc(user.uid).set({
+          email: user.email,
+          displayName: user.displayName || user.email.split('@')[0],
+          photoURL: user.photoURL || null,
+          cbt_score: payload,
+          lastUpdated: new Date().toISOString()
+        }, { merge: true });
+      }
+
+      // Local storage mirror
+      localStorage.setItem(`nextsem_cbt_score_${user.email}`, JSON.stringify(payload));
+      localStorage.setItem('nextsem_cbt_score_latest', JSON.stringify(payload));
+      localStorage.setItem('nextsem_user', JSON.stringify({
+        uid: user.uid,
+        name: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        photo: user.photoURL || null
+      }));
+
+      if (elements.syncStatusBadge) {
+        elements.syncStatusBadge.className = 'sync-status-badge synced';
+      }
+      if (elements.syncStatusText) {
+        elements.syncStatusText.textContent = '☁️ Synced to CS-Guide Profile';
+      }
+      if (elements.btnManualSync) {
+        elements.btnManualSync.innerHTML = '<span>✓</span> Score Synced';
+        elements.btnManualSync.disabled = false;
+      }
+      if (elements.syncNotification) {
+        elements.syncNotification.style.display = 'flex';
+        elements.syncNotification.innerHTML = `<span>🎉</span> Score of <strong>${payload.score} / ${payload.totalQuestions}</strong> (${payload.percentage}%) has been certified and synced under <strong>${user.email}</strong>!`;
+      }
+    } catch (err) {
+      console.warn("Firestore sync warning (saved locally):", err);
+      localStorage.setItem(`nextsem_cbt_score_${user.email}`, JSON.stringify(payload));
+      localStorage.setItem('nextsem_cbt_score_latest', JSON.stringify(payload));
+
+      if (elements.syncStatusBadge) {
+        elements.syncStatusBadge.className = 'sync-status-badge synced';
+      }
+      if (elements.syncStatusText) {
+        elements.syncStatusText.textContent = '💾 Saved Locally (Offline)';
+      }
+      if (elements.btnManualSync) {
+        elements.btnManualSync.innerHTML = '<span>🔄</span> Retry Cloud Sync';
+        elements.btnManualSync.disabled = false;
+      }
+      if (elements.syncNotification) {
+        elements.syncNotification.style.display = 'flex';
+        elements.syncNotification.innerHTML = `<span>💾</span> Score saved locally on device for ${user.email}. Sign in when connected to cloud.`;
+      }
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    if (!auth) {
+      alert("Google Authentication service is initializing. Please check your internet connection.");
+      return;
+    }
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const result = await auth.signInWithPopup(provider);
+      if (result && result.user) {
+        currentUser = result.user;
+        updateUserUI(currentUser);
+        if (state.isSubmitted) {
+          await syncScoreToFirestore(currentUser);
+        }
+      }
+    } catch (e) {
+      console.warn("Popup sign-in fallback:", e);
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        await auth.signInWithRedirect(provider);
+      } catch (err2) {
+        console.error("Sign-in failed:", err2);
+        alert("Google Sign-In failed: " + err2.message);
+      }
+    }
+  }
+
+  async function handleGoogleSignOut() {
+    if (auth) {
+      await auth.signOut();
+    }
+    currentUser = null;
+    updateUserUI(null);
+  }
+
+  function handleHeaderAuthClick() {
+    if (currentUser) {
+      if (state.isSubmitted && elements.csGuideSyncCard) {
+        elements.csGuideSyncCard.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.open('http://localhost:3001/profile', '_blank');
+      }
+    } else {
+      handleGoogleSignIn();
+    }
   }
 
   function renderReviewList(filterType) {
@@ -712,6 +990,26 @@
         closeSubmitModal();
       }
     });
+
+    // CS-Guide Auth & Sync Events
+    if (elements.btnGoogleSync) {
+      elements.btnGoogleSync.addEventListener('click', handleGoogleSignIn);
+    }
+    if (elements.btnHeaderAuth) {
+      elements.btnHeaderAuth.addEventListener('click', handleHeaderAuthClick);
+    }
+    if (elements.btnManualSync) {
+      elements.btnManualSync.addEventListener('click', () => {
+        if (currentUser) {
+          syncScoreToFirestore(currentUser);
+        } else {
+          handleGoogleSignIn();
+        }
+      });
+    }
+    if (elements.btnGoogleSignOut) {
+      elements.btnGoogleSignOut.addEventListener('click', handleGoogleSignOut);
+    }
   }
 
   // Application Startup
@@ -726,6 +1024,38 @@
 
     initEvents();
     setupKeyboardNavigation();
+
+    // Setup Firebase Auth State Listener
+    if (auth) {
+      auth.onAuthStateChanged((user) => {
+        currentUser = user;
+        updateUserUI(user);
+        if (user && state.isSubmitted) {
+          syncScoreToFirestore(user);
+        }
+      });
+
+      auth.getRedirectResult().then((result) => {
+        if (result && result.user) {
+          currentUser = result.user;
+          updateUserUI(result.user);
+          if (state.isSubmitted) {
+            syncScoreToFirestore(result.user);
+          }
+        }
+      }).catch((redirectErr) => {
+        console.warn("Redirect auth check:", redirectErr);
+      });
+    } else {
+      // Check if user was previously saved locally
+      try {
+        const localUserRaw = localStorage.getItem('nextsem_user');
+        if (localUserRaw) {
+          const u = JSON.parse(localUserRaw);
+          updateUserUI({ displayName: u.name, email: u.email, photoURL: u.photo });
+        }
+      } catch (e) {}
+    }
 
     if (state.isSubmitted) {
       document.querySelector('.cbt-main-content').style.display = 'none';

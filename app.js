@@ -270,4 +270,18 @@
   // Initial render
   renderApps();
   updateGeneratedCommand();
+
+  // CBT Score preview banner check
+  try {
+    const latestScoreRaw = localStorage.getItem('nextsem_cbt_score_latest');
+    const cbtBanner = document.querySelector('.cbt-launch-banner');
+    if (latestScoreRaw && cbtBanner) {
+      const scoreData = JSON.parse(latestScoreRaw);
+      const btnLink = cbtBanner.querySelector('a');
+      if (btnLink && scoreData.score !== undefined) {
+        btnLink.innerHTML = `<span>Score: ${scoreData.score}/${scoreData.totalQuestions || 100} (${scoreData.passed ? 'PASSED ✅' : 'REVIEW ⚠️'})</span> <span>→</span>`;
+        btnLink.style.background = scoreData.passed ? '#059669' : '#2563eb';
+      }
+    }
+  } catch (e) {}
 })();
