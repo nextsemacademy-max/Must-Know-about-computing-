@@ -766,13 +766,25 @@
       }
     } catch (e) {
       console.warn("Popup sign-in fallback:", e);
+      if (e && (e.code === 'auth/unauthorized-domain' || (e.message && e.message.includes('unauthorized-domain')))) {
+        if (confirm("Google Authentication is officially configured on the NextSem CS-Guide portal (ignou-study-notes-by-nextsem.web.app).\n\nWould you like to open the test on CS-Guide to sign in with Google?")) {
+          window.open("https://ignou-study-notes-by-nextsem.web.app/cbt/", "_blank");
+        }
+        return;
+      }
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         await auth.signInWithRedirect(provider);
       } catch (err2) {
         console.error("Sign-in failed:", err2);
-        alert("Google Sign-In failed: " + err2.message);
+        if (err2 && (err2.code === 'auth/unauthorized-domain' || (err2.message && err2.message.includes('unauthorized-domain')))) {
+          if (confirm("Google Authentication is officially configured on the NextSem CS-Guide portal (ignou-study-notes-by-nextsem.web.app).\n\nWould you like to open the test on CS-Guide to sign in with Google?")) {
+            window.open("https://ignou-study-notes-by-nextsem.web.app/cbt/", "_blank");
+          }
+        } else {
+          alert("Google Sign-In failed: " + err2.message);
+        }
       }
     }
   }
