@@ -11,9 +11,19 @@
   <strong>A comprehensive, step-by-step interactive visual guide for searching, installing, upgrading, and uninstalling applications via terminal using Windows Package Manager (<code>winget</code>).</strong>
 </p>
 
-[🌐 **Launch Live Web App**](https://nextsemacademy-max.github.io/Must-Know-about-computing-/) &bull; [📖 **Quick Reference**](#-quick-command-cheat-sheet) &bull; [⚙️ **Interactive Generator**](#-interactive-generator-features) &bull; [🛠️ **Troubleshooting**](#-troubleshooting--error-resolutions)
+[🌐 **Launch Live Web App**](https://nextsemacademy-max.github.io/Must-Know-about-computing-/) &bull; [📝 **100-MCQ CBT Exam**](https://nextsemacademy-max.github.io/Must-Know-about-computing-/cbt/) &bull; [📖 **Quick Reference**](#-quick-command-cheat-sheet) &bull; [⚙️ **Interactive Generator**](#-interactive-generator-features) &bull; [🛠️ **Troubleshooting**](#-troubleshooting--error-resolutions)
 
 </div>
+
+---
+
+## 📝 100-MCQ Computer Competency Test (CBT)
+
+A production-grade, interactive **Computer-Based Testing Engine** deployed live at [`/cbt/`](https://nextsemacademy-max.github.io/Must-Know-about-computing-/cbt/):
+
+- **100 Comprehensive MCQs**: Windows OS (12), Linux OS (13), MS Word (8), MS Excel (9), MS PowerPoint (8), Internet Theory & Networking (15), Git VCS (15), HTML (10), and CSS (10).
+- **Exam Engine Features**: 90-minute countdown timer, NTA-standard question matrix palette, dual mode (Exam Mode vs Practice Mode with instant explanations), performance analytics scorecard, and printable PDF report.
+- [👉 **Launch 100-MCQ Assessment Directly**](https://nextsemacademy-max.github.io/Must-Know-about-computing-/cbt/)
 
 ---
 
@@ -27,6 +37,7 @@ This repository hosts both the complete educational guide and an **interactive c
 
 ## ✨ Features
 
+- **📝 100-Question CBT Assessment:** Complete full-stack computer competency test engine with detailed solutions.
 - **📸 100% Real-Terminal Verified:** Every single step includes verified PowerShell screenshots with timestamps, demonstrating real output.
 - **🌓 Dark & Light Mode:** Seamlessly switch between GitHub-dark and light themes with automatic preference persistence.
 - **⚙️ Interactive Command Generator:** Select software (VS Code, Git, Chrome, Node.js, Python, VLC, etc.) to generate one-line silent install scripts.

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Computer Based Test (CBT) Assessment covering Windows OS, Linux OS, MS Office (Word, Excel, PowerPoint), Internet Theory, Git, HTML, and CSS. 100 Comprehensive MCQs.">
+  <meta name="keywords" content="Computer Based Test, CBT, Windows OS, Linux, MS Word, MS Excel, MS PowerPoint, Internet Theory, Git, HTML, CSS, Multiple Choice Questions">
+  <title>National Computer Competency Assessment - 100 MCQ CBT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Examination Header -->
+    <header class="cbt-header">
+      <div class="brand-section">
+        <div class="brand-logo" aria-hidden="true">CBT</div>
+        <div class="brand-text">
+          <h1>National Computer Competency Assessment</h1>
+          <p>Windows OS • Linux • MS Office • Networking • Git • Web Tech (100 MCQs)</p>
+        </div>
+      </div>
+
+      <div class="header-center-info">
+        <div class="mode-badge" id="mode-badge">
+          <span class="dot"></span>
+          <span id="mode-badge-text">Timed Exam Mode</span>
+        </div>
+
+        <div class="timer-card" id="timer-card" title="Time Remaining">
+          <span class="timer-icon" aria-hidden="true">⏱️</span>
+          <span class="timer-digits" id="timer-display">01:30:00</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <a href="../" class="btn-sm-text" title="Return to Windows CLI Guide" style="text-decoration: none; color: inherit;">
+          <span>←</span> CLI Guide
+        </a>
+        <button type="button" class="btn-sm-text" id="btn-toggle-mode" title="Switch between Timed Exam and Practice Mode">
+          <span>🔄</span> Mode
+        </button>
+        <button type="button" class="btn-icon" id="btn-font-dec" title="Decrease Font Size" aria-label="Decrease Font Size">A-</button>
+        <button type="button" class="btn-icon" id="btn-font-inc" title="Increase Font Size" aria-label="Increase Font Size">A+</button>
+        <button type="button" class="btn-icon" id="btn-sound-toggle" title="Toggle Sound Feedback" aria-label="Toggle Sound Feedback">🔊</button>
+        <button type="button" class="btn-icon" id="btn-theme-toggle" title="Toggle Dark/Light Theme" aria-label="Toggle Dark/Light Theme">☀️</button>
+        <button type="button" class="btn-icon" id="btn-fullscreen" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">⛶</button>
+      </div>
+    </header>
+
+    <!-- Main Active Test Arena -->
+    <main class="cbt-main-content">
+      <!-- Left Column: Question Arena -->
+      <section class="question-stage" id="question-stage" aria-label="Question Content">
+        <!-- Question Meta Information Bar -->
+        <div class="question-meta-bar">
+          <div class="meta-left">
+            <span class="category-tag" id="category-tag">Windows OS</span>
+            <span class="subtopic-tag" id="subtopic-tag">• File Systems</span>
+          </div>
+          <div class="meta-right">
+            <span class="marks-badge" id="marks-badge">+1.00 Marks / 0.00</span>
+            <button type="button" class="btn-flag" id="btn-flag">
+              <span>☆</span> Mark for Review
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Content Card -->
+        <article class="question-card">
+          <div class="question-header">
+            <span class="question-index-pill" id="question-number-tag">Q 1 / 100</span>
+            <div class="question-text" id="question-text">
+              Loading assessment question...
+            </div>
+          </div>
+
+          <!-- Multiple Choice Options List -->
+          <div class="options-list" id="options-container">
+            <!-- Dynamic option items will be rendered here -->
+          </div>
+
+          <!-- Practice Mode Real-time Feedback & Explanation -->
+          <div class="practice-explanation-card" id="practice-explanation-card">
+            <div class="explanation-header">
+              <h4><span>💡</span> Instant Solution & Analysis</h4>
+            </div>
+            <div class="explanation-body" id="practice-explanation-text"></div>
+          </div>
+        </article>
+
+        <!-- Action Control Buttons -->
+        <nav class="action-controls-bar" aria-label="Test Actions">
+          <div class="action-left">
+            <button type="button" class="btn btn-review" id="btn-review" title="Flag this question for later review and proceed to next">
+              Mark for Review & Next
+            </button>
+            <button type="button" class="btn btn-clear" id="btn-clear" title="Clear your selected answer for this question">
+              Clear Response
+            </button>
+          </div>
+
+          <div class="action-right">
+            <button type="button" class="btn btn-secondary" id="btn-prev" title="Go to previous question (Shortcut: P or Left Arrow)">
+              ← Previous
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-next" title="Save response and proceed to next question (Shortcut: Enter or N)">
+              Save & Next →
+            </button>
+          </div>
+        </nav>
+      </section>
+
+      <!-- Right Column: Navigation Palette & Question Matrix -->
+      <aside class="sidebar-palette" aria-label="Question Navigation Matrix">
+        <div class="palette-panel">
+          <!-- Candidate Header -->
+          <div class="candidate-card">
+            <div class="candidate-avatar">CC</div>
+            <div class="candidate-info">
+              <h3>Computer Competency</h3>
+              <p>ID: CBT-2026-X100</p>
+            </div>
+          </div>
+
+          <!-- Legend Matrix -->
+          <div class="legend-grid">
+            <div class="legend-item">
+              <span class="legend-badge answered" id="count-answered">0</span>
+              <span>Answered</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-badge not-answered" id="count-not-answered">0</span>
+              <span>Not Answered</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-badge marked" id="count-marked">0</span>
+              <span>Marked Review</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-badge marked-answered" id="count-marked-answered">0</span>
+              <span>Ans & Marked</span>
+            </div>
+            <div class="legend-item" style="grid-column: span 2;">
+              <span class="legend-badge not-visited" id="count-not-visited">100</span>
+              <span>Not Visited</span>
+            </div>
+          </div>
+
+          <!-- Category Filter Dropdown -->
+          <div class="palette-filter-section">
+            <label for="category-filter-select">Section Filter</label>
+            <select id="category-filter-select" class="category-filter-select">
+              <option value="ALL">All Sections (100 Questions)</option>
+              <option value="Windows OS">Windows OS (12)</option>
+              <option value="Linux OS">Linux OS (13)</option>
+              <option value="MS Word">MS Word (8)</option>
+              <option value="MS Excel">MS Excel (9)</option>
+              <option value="MS PowerPoint">MS PowerPoint (8)</option>
+              <option value="Internet Theory">Internet Theory & Networking (15)</option>
+              <option value="Git">Git Version Control (15)</option>
+              <option value="HTML">HTML (10)</option>
+              <option value="CSS">CSS (10)</option>
+            </select>
+          </div>
+
+          <!-- Question Grid Matrix Header -->
+          <div class="palette-grid-header">
+            <h4>Question Palette</h4>
+            <span>1 to 100</span>
+          </div>
+
+          <!-- 100 Question Grid -->
+          <div class="questions-matrix" id="questions-matrix" role="navigation" aria-label="Question Matrix">
+            <!-- Buttons 1 to 100 generated by JavaScript -->
+          </div>
+
+          <!-- Final Submit Test Button -->
+          <button type="button" class="btn btn-submit-exam" id="btn-submit-test">
+            Submit Test
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Confirmation Modal Before Final Submission -->
+    <div class="modal-overlay" id="submit-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="modal-title">Confirm Final Submission</h2>
+          <p>Please review your question tally before concluding the examination.</p>
+        </div>
+
+        <div class="modal-summary-grid">
+          <div class="summary-stat-box">
+            <span>Answered:</span>
+            <strong style="color: var(--status-answered);" id="modal-answered">0</strong>
+          </div>
+          <div class="summary-stat-box">
+            <span>Not Answered:</span>
+            <strong style="color: var(--status-not-answered);" id="modal-not-answered">0</strong>
+          </div>
+          <div class="summary-stat-box">
+            <span>Marked for Review:</span>
+            <strong style="color: var(--status-marked);" id="modal-marked">0</strong>
+          </div>
+          <div class="summary-stat-box">
+            <span>Not Visited:</span>
+            <strong style="color: var(--text-muted);" id="modal-not-visited">0</strong>
+          </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Once submitted, your responses will be evaluated and an instant scorecard along with complete solutions will be generated.
+        </p>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-submit">Return to Test</button>
+          <button type="button" class="btn btn-primary" id="btn-confirm-submit">Confirm & Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post-Submission Results & Detailed Analytics View -->
+    <section class="results-container" id="results-container" aria-label="Examination Results">
+      <!-- Top Hero Score Card -->
+      <div class="score-hero-card">
+        <div class="score-left">
+          <h2>Examination Performance Report</h2>
+          <p style="color: var(--text-secondary); margin-top: 0.25rem;">
+            Computer Competency 100-Question Standard Assessment
+          </p>
+          <span class="score-badge-status pass" id="score-badge">PASSED</span>
+        </div>
+        <div class="score-display-radial">
+          <span class="score-number" id="score-number">0</span>
+          <span class="score-total">OUT OF 100</span>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <span class="metric-label">Accuracy Rate</span>
+          <span class="metric-val" id="accuracy-val">0%</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Total Attempted</span>
+          <span class="metric-val" id="attempted-val">0 / 100</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Time Elapsed</span>
+          <span class="metric-val" id="time-spent-val">00m 00s</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Passing Standard</span>
+          <span class="metric-val" style="color: var(--status-answered);">60% (60 Marks)</span>
+        </div>
+      </div>
+
+      <!-- Category Performance Breakdown -->
+      <div class="category-breakdown-card">
+        <h3 class="section-title">Topic-Wise Proficiency Breakdown</h3>
+        <div class="categories-bar-list" id="category-progress-list">
+          <!-- Dynamic category bars -->
+        </div>
+      </div>
+
+      <!-- Detailed Review of All 100 Questions -->
+      <div class="review-arena">
+        <div class="review-toolbar">
+          <h3 class="section-title">Comprehensive Question Analysis & Answer Key</h3>
+          <div class="review-filters">
+            <button type="button" class="filter-chip active" data-filter="ALL">All (100)</button>
+            <button type="button" class="filter-chip" data-filter="CORRECT">Correct</button>
+            <button type="button" class="filter-chip" data-filter="INCORRECT">Incorrect</button>
+            <button type="button" class="filter-chip" data-filter="UNATTEMPTED">Unattempted</button>
+            <button type="button" class="filter-chip" data-filter="FLAGGED">Flagged</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" id="btn-print-report">
+            <span>🖨️</span> Print / Save PDF Scorecard
+          </button>
+          <button type="button" class="btn btn-secondary" id="btn-export-json">
+            <span>📥</span> Export Results JSON
+          </button>
+          <button type="button" class="btn btn-secondary" id="btn-retake">
+            <span>🔄</span> Retake Test
+          </button>
+        </div>
+
+        <!-- Rendered list of review cards -->
+        <div style="display: flex; flex-direction: column; gap: 1rem;" id="review-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Load Questions Dataset and App Engine -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
